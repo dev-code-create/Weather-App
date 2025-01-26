@@ -13,6 +13,7 @@ import { Clock, Loader2, Search, XCircle } from "lucide-react";
 import { uselocationSearch } from "@/hooks/use-weather";
 import { useNavigate } from "react-router-dom";
 import { useSearchHistory } from "@/hooks/use-search-history";
+import { format } from "date-fns";
 
 const CitySearch = () => {
   const [open, setOpen] = useState(false);
@@ -33,7 +34,7 @@ const CitySearch = () => {
     });
 
     setOpen(false);
-    navigate(`/city/${name}??lat=${lat}&lon=${lon}`);
+    navigate(`/city/${name}?lat=${lat}&lon=${lon}`);
   };
 
   return (
@@ -57,15 +58,17 @@ const CitySearch = () => {
             <CommandEmpty>No Cities found.</CommandEmpty>
           )}
           <CommandGroup heading="Favourites">
-            <CommandItem>Calendar</CommandItem>
+            <CommandItem></CommandItem>
           </CommandGroup>
           <CommandSeparator />
 
           {history.length > 0 && (
             <>
               <CommandGroup heading="Recent Searches">
-                <div>
-                  <p>Recent Searches</p>
+                <div className="flex items-center justify-between px-2 my-2">
+                  <p className="text-sm text-muted-foreground">
+                    Recent Searches
+                  </p>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -94,6 +97,7 @@ const CitySearch = () => {
                       <span className="text-sm text-muted-foreground">
                         , {location.country}
                       </span>
+                      <span>{format(location.searchedAt, "MMM d,h:mm a")}</span>
                     </CommandItem>
                   );
                 })}
